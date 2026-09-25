@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ALR-1001",
+    "title": "Office application spawned encoded PowerShell",
+    "source": "edr",
+    "rule": "EDR-OFFICE-CHILD-PS",
+    "severity": "high",
+    "status": "new",
+    "created_at": "2026-09-24T13:14:36Z",
+    "description": "WINWORD.EXE spawned powershell.exe with -EncodedCommand and a hidden window on a Finance workstation.",
+    "entities": {"hosts": ["WKS-FIN-023"], "users": ["j.alvarez"], "ips": []},
+    "evidence_refs": ["edr-7f06"]
+  },
+  {
+    "id": "ALR-1002",
+    "title": "Anomalous S3 data egress from unfamiliar IP",
+    "source": "cloudtrail",
+    "rule": "CT-S3-EGRESS-ANOMALY",
+    "severity": "high",
+    "status": "new",
+    "created_at": "2026-09-24T14:06:10Z",
+    "description": "1,284 GetObject requests (~3.2 GB) against helix-clinical-trials-phi from 185.220.101.47 in 5 minutes.",
+    "entities": {"hosts": [], "users": ["m.chen"], "ips": ["185.220.101.47"]},
+    "evidence_refs": ["ct-3a06"]
+  },
+  {
+    "id": "ALR-1003",
+    "title": "MFA factor enrolled from anonymizing proxy after push denials",
+    "source": "idp",
+    "rule": "IDP-MFA-FATIGUE",
+    "severity": "medium",
+    "status": "new",
+    "created_at": "2026-09-24T13:47:45Z",
+    "description": "Three rejected Okta Verify pushes followed by an approved push and a new MFA device enrollment from a Tor exit node.",
+    "entities": {"hosts": [], "users": ["m.chen"], "ips": ["185.220.101.47"]},
+    "evidence_refs": ["idp-5c07"]
+  },
+  {
+    "id": "ALR-1004",
+    "title": "Encoded PowerShell execution on build server",
+    "source": "edr",
+    "rule": "EDR-ENCODED-PS",
+    "severity": "medium",
+    "status": "new",
+    "created_at": "2026-09-24T02:00:06Z",
+    "description": "powershell.exe executed with -EncodedCommand on BLD-CI-01.",
+    "entities": {"hosts": ["BLD-CI-01"], "users": ["svc-ci"], "ips": []},
+    "evidence_refs": ["edr-7f01"]
+  },
+  {
+    "id": "ALR-1005",
+    "title": "RDP from Finance VLAN to admin jump host",
+    "source": "edr",
+    "rule": "NET-FIN-TO-MGMT-RDP",
+    "severity": "medium",
+    "status": "new",
+    "created_at": "2026-09-24T13:35:05Z",
+    "description": "WKS-FIN-023 opened an RDP session to JMP-ADM-01 using a privileged account.",
+    "entities": {"hosts": ["WKS-FIN-023", "JMP-ADM-01"], "users": ["m.chen"], "ips": ["10.10.1.5"]},
+    "evidence_refs": ["edr-7f0b", "edr-7f0c"]
+  }
+]

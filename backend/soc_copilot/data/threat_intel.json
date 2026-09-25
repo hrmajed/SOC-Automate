@@ -1,0 +1,8 @@
+{
+  "feed": "local-ti (offline snapshot 2026-09-24)",
+  "indicators": [
+    {"type": "ip", "value": "45.137.21.9", "verdict": "malicious", "confidence": "high", "labels": ["c2", "loader-staging"], "description": "Staging and C2 server used by a macro-document loader campaign targeting finance teams (seen in INC-2025-0212)."},
+    {"type": "ip", "value": "185.220.101.47", "verdict": "suspicious", "confidence": "high", "labels": ["tor-exit", "anonymizer"], "description": "Tor exit relay (Frankfurt, DE). No legitimate Helix traffic expected."},
+    {"type": "sha256", "value": "9f2c1e7a4b3d8e6f0a1b2c3d4e5f60718293a4b5c6d7e8f9012a3b4c5d6e7f80", "verdict": "malicious", "confidence": "medium", "labels": ["loader"], "description": "svchost-update.exe second-stage loader."}
+  ]
+}

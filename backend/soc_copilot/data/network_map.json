@@ -1,0 +1,32 @@
+{
+  "organization": "Helix Dynamics (fictional biotech)",
+  "segments": [
+    {"name": "Finance VLAN", "cidr": "10.20.4.0/24", "zone": "corporate", "notes": "Finance and payroll workstations. Must never initiate RDP/SMB to the Management segment (SEC-POL-07)."},
+    {"name": "Management", "cidr": "10.10.1.0/24", "zone": "privileged", "notes": "Admin jump hosts. Reachable only from the PAM gateway 10.10.1.2."},
+    {"name": "Core Servers", "cidr": "10.10.0.0/24", "zone": "privileged", "notes": "Domain controllers and core identity services."},
+    {"name": "Engineering", "cidr": "10.30.2.0/24", "zone": "corporate", "notes": "Build and CI infrastructure."},
+    {"name": "Egress NAT", "cidr": "203.0.113.0/28", "zone": "edge", "notes": "All sanctioned internet egress and AWS API traffic leaves via 203.0.113.10."}
+  ],
+  "assets": [
+    {"hostname": "WKS-FIN-023", "ip": "10.20.4.23", "type": "workstation", "os": "Windows 11 23H2", "segment": "Finance VLAN", "owner": "j.alvarez", "criticality": "medium", "tags": ["finance", "payroll-data", "edr-managed"], "notes": "Handles payroll exports containing SSNs."},
+    {"hostname": "JMP-ADM-01", "ip": "10.10.1.5", "type": "jump host", "os": "Windows Server 2022", "segment": "Management", "owner": "m.chen", "criticality": "high", "tags": ["privileged-access", "cloud-admin", "stores-aws-cli-credentials"], "notes": "Cloud administrators run the AWS CLI from here. Long-lived IAM keys for m.chen-admin live in C:\\Users\\mchen\\.aws\\credentials (see INC-2026-0033)."},
+    {"hostname": "DC-01", "ip": "10.10.0.10", "type": "domain controller", "os": "Windows Server 2022", "segment": "Core Servers", "owner": "it-ops", "criticality": "critical", "tags": ["tier0"], "notes": "Primary AD domain controller for HELIX."},
+    {"hostname": "BLD-CI-01", "ip": "10.30.2.10", "type": "build server", "os": "Windows Server 2022", "segment": "Engineering", "owner": "svc-ci", "criticality": "medium", "tags": ["ci", "jenkins-agent", "encoded-powershell-expected"], "notes": "Jenkins agent. Nightly 02:00 UTC signing job runs PowerShell with -EncodedCommand (INC-2025-0147)."},
+    {"hostname": "ARTIFACTS-01", "ip": "10.30.2.50", "type": "artifact repository", "os": "Ubuntu 22.04", "segment": "Engineering", "owner": "svc-ci", "criticality": "medium", "tags": ["ci"], "notes": "Internal Nexus artifact store."},
+    {"hostname": "PAM-GW-01", "ip": "10.10.1.2", "type": "PAM gateway", "os": "Appliance", "segment": "Management", "owner": "it-ops", "criticality": "high", "tags": ["privileged-access"], "notes": "The only sanctioned path into the Management segment."}
+  ],
+  "cloud": [
+    {"provider": "aws", "account_id": "411122223333", "alias": "helix-prod", "criticality": "critical",
+     "resources": [
+       {"type": "s3_bucket", "name": "helix-clinical-trials-phi", "classification": "PHI / special-category personal data", "criticality": "critical", "notes": "Clinical-trial participant records (US and EU participants). HIPAA and GDPR in scope."},
+       {"type": "iam_role", "name": "DataScienceReadRole", "criticality": "high", "notes": "Read access to trial data buckets. Assumable by CloudAdmins."},
+       {"type": "cloudtrail_trail", "name": "helix-org-trail", "criticality": "critical", "notes": "Organization trail; protected by SCP deny on StopLogging."}
+     ]}
+  ],
+  "identities": [
+    {"username": "j.alvarez", "display_name": "Julia Alvarez", "email": "julia.alvarez@helixdyn.example", "phone": "+1 617-555-0142", "windows_account": "HELIX\\jalvarez", "aliases": ["jalvarez"], "title": "Senior Payroll Analyst", "department": "Finance", "usual_locations": ["Boston, US"], "privileged": false, "aws_iam_users": [], "aws_access_keys": []},
+    {"username": "m.chen", "display_name": "Marcus Chen", "email": "marcus.chen@helixdyn.example", "phone": "+1 617-555-0199", "windows_account": "HELIX\\mchen", "aliases": ["mchen", "m.chen-admin"], "title": "Cloud Platform Administrator", "department": "IT", "usual_locations": ["Boston, US"], "privileged": true, "aws_iam_users": ["m.chen-admin"], "aws_access_keys": ["AKIA4HLXMCHEN7QXZ2RT"]},
+    {"username": "svc-ci", "display_name": "CI Service Account", "email": "svc-ci@helixdyn.example", "phone": "", "windows_account": "HELIX\\svc-ci", "aliases": [], "title": "Service account", "department": "Engineering", "usual_locations": ["BLD-CI-01"], "privileged": false, "aws_iam_users": [], "aws_access_keys": []},
+    {"username": "r.okafor", "display_name": "Rita Okafor", "email": "rita.okafor@helixdyn.example", "phone": "+1 617-555-0117", "windows_account": "HELIX\\rokafor", "aliases": ["rokafor"], "title": "SOC Analyst", "department": "Security", "usual_locations": ["Boston, US"], "privileged": false, "aws_iam_users": [], "aws_access_keys": []}
+  ]
+}
