@@ -370,7 +370,7 @@ def environment_context(store: DataStore, events: list[Event], timeline: list[di
     kind_rank = {"compliance": 0, "policy": 1, "incident": 2, "cloud_asset": 3, "asset": 4}
     for h in rag_hits:
         overlap = set(h.get("hosts", [])) & (involved_mal or involved)
-        if not overlap and h["score"] < 0.12:
+        if not overlap and (h["type"] in ("incident", "asset", "cloud_asset") or h["score"] < 0.12):
             continue
         items.append({"statement": h.get("summary") or h["title"], "doc_id": h["doc_id"], "title": h["title"],
                       "kind": h["type"], "trust": h["trust"], "score": h["score"],

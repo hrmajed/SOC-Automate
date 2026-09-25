@@ -31,6 +31,7 @@ def test_environment_context_explains_why(run):
     r = run("ALR-1001")
     docs = {e["doc_id"] for e in r["environment_context"]}
     assert {"COMP-GDPR-33", "INC-2026-0033", "SEC-POL-07"} <= docs
+    assert "INC-2025-0147" not in docs, "unrelated past incidents must not be offered as context"
     assert any("DPO" in a["action"] for a in r["recommended_actions"])
     assert all(a["requires_approval"] for a in r["recommended_actions"])
 
