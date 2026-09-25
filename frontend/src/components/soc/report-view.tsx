@@ -36,7 +36,7 @@ function Stat({ label, value }: { label: string; value: React.ReactNode }) {
 
 export function VerdictBanner({ report }: { report: Report }) {
   const v = VERDICT[report.verdict];
-  const blocked = report.guardrails.findings.filter((f) => f.layer !== "output" || f.kind !== "unsupported_technique").length;
+  const blocked = report.guardrails.findings.length + report.guardrails.rag_blocked.length;
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">

@@ -190,7 +190,10 @@ async function json<T>(res: Response): Promise<T> {
 export const api = {
   health: () => fetch("/api/health", { cache: "no-store" }).then(json<Health>),
   alerts: () => fetch("/api/alerts", { cache: "no-store" }).then(json<Alert[]>),
-  report: (id: string) => fetch(`/api/reports/${id}`, { cache: "no-store" }).then((r) => (r.ok ? (r.json() as Promise<Report>) : null)),
+  report: (id: string) =>
+    fetch(`/api/alerts/${id}`, { cache: "no-store" })
+      .then(json<{ report: Report | null }>)
+      .then((a) => a.report),
   runEvals: () => fetch("/api/evals/run", { method: "POST" }).then(json<EvalResult>),
 };
 

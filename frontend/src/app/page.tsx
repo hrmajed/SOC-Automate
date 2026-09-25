@@ -229,7 +229,7 @@ export default function Console() {
                         <CardTitle className="flex items-center gap-2 text-sm">
                           <Bot className="size-4 text-primary" /> Agent trace
                           <span className="font-normal text-muted-foreground">
-                            · {steps.length} tool calls{report ? ` · ${report.metrics.events_reviewed} events · ${report.metrics.duration_ms} ms compute` : ""}
+                            · {steps.length} tool calls{report ? ` · ${report.metrics.events_reviewed} events · ${(report.metrics.duration_ms / 1000).toFixed(1)} s end-to-end` : ""}
                           </span>
                         </CardTitle>
                         <Progress value={progress} className="h-1" />

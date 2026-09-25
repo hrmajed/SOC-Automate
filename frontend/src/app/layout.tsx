@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+    <html lang="en" className={`dark ${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="antialiased">
         <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
       </body>
     </html>
