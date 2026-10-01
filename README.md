@@ -1,4 +1,4 @@
-# SOC Copilot
+# SOC Automate
 
 A local, context-aware alert triage console for SOC analysts. When an alert arrives, an AI investigation agent:
 
